@@ -14,7 +14,8 @@ class UserReponseController extends Controller
      */
     public function index()
     {
-        //
+        $user_reponse = User_reponse::all();
+        return response()->json($user_reponse);
     }
 
     /**
@@ -35,7 +36,17 @@ class UserReponseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'idusers' => 'required',
+            'idhabitation' => '',
+            'etat' => '',
+            'idquestion' => '',
+            'idparent' => '',
+            'reponse' => 'required'
+        ]);
+        $user_reponse = user_reponse::create($request->all());
+        return response()->json(['message'=> 'Réponse utilisateur crée', 
+        'user_reponse' => $user_reponse]);
     }
 
     /**
@@ -44,9 +55,9 @@ class UserReponseController extends Controller
      * @param  \App\Models\User_reponse  $user_reponse
      * @return \Illuminate\Http\Response
      */
-    public function show(User_reponse $user_reponse)
+    public function show($id)
     {
-        //
+        return User_reponse::find($id);
     }
 
     /**
@@ -67,9 +78,30 @@ class UserReponseController extends Controller
      * @param  \App\Models\User_reponse  $user_reponse
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User_reponse $user_reponse)
+    public function update(Request $request, $id)
     {
-        //
+        $user_reponse = user_reponse::findOrFail($id);
+        $request->validate([
+            'idusers' => 'required',
+            'idhabitation' => '',
+            'etat' => '',
+            'idquestion' => '',
+            'idparent' => '',
+            'reponse' => 'required'
+        ]);
+        $user_reponse->idusers = $request->idusers;
+        $user_reponse->idhabitation = $request->idhabitation;
+        $user_reponse->etat = $request->etat;
+        $user_reponse->idquestion = $request->idquestion;
+        $user_reponse->idparent = $request->idparent;
+        $user_reponse->reponse = $request->reponse;
+        
+        $user_reponse->save();
+        
+        return response()->json([
+            'message' => 'user_reponse modifié!',
+            'user_reponse' => $user_reponse
+        ]);
     }
 
     /**
@@ -78,8 +110,12 @@ class UserReponseController extends Controller
      * @param  \App\Models\User_reponse  $user_reponse
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User_reponse $user_reponse)
+    public function destroy($id)
     {
-        //
+        $user_reponse= User_reponse::find($id);
+        $user_reponse->delete();
+        return response()->json([
+            'message' => 'user_reponse supprimé'
+        ]);
     }
 }
