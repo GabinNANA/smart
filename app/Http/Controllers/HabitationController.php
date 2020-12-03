@@ -14,7 +14,8 @@ class HabitationController extends Controller
      */
     public function index()
     {
-        //
+        $habitations = Habitation::all();
+        return response()->json($habitations);
     }
 
     /**
@@ -35,7 +36,12 @@ class HabitationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'intitule' => 'required',
+        ]);
+        $habitation = habitation::create($request->all());
+        return response()->json(['message'=> 'habitation crée', 
+        'habitation' => $habitation]);
     }
 
     /**
@@ -46,7 +52,7 @@ class HabitationController extends Controller
      */
     public function show(Habitation $habitation)
     {
-        //
+        return Habitation::find($id);
     }
 
     /**
@@ -69,7 +75,18 @@ class HabitationController extends Controller
      */
     public function update(Request $request, Habitation $habitation)
     {
-        //
+        $habitation = habitation::findOrFail($id);
+        $request->validate([
+            'intitule'=> 'required',
+        ]);
+        $habitation->intitule = $request->intitule;
+        
+        $habitation->save();
+        
+        return response()->json([
+            'message' => 'habitation modifié!',
+            'habitation' => $habitation
+        ]);
     }
 
     /**
@@ -80,6 +97,10 @@ class HabitationController extends Controller
      */
     public function destroy(Habitation $habitation)
     {
-        //
+        $habitation= Habitation::find($id);
+        $habitation->delete();
+        return response()->json([
+            'message' => 'habitation supprimé'
+        ]);
     }
 }
