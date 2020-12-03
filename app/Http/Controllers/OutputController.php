@@ -119,7 +119,7 @@ class OutputController extends Controller
      * @param  \App\Models\Output  $output
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Output $output)
+    public function destroy($id)
     {
         $output= Output::find($id);
         $output->delete();

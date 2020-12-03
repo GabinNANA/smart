@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Habitation;
+use App\Models\montant;
 use Illuminate\Http\Request;
 
-class HabitationController extends Controller
+class MontantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class HabitationController extends Controller
      */
     public function index()
     {
-        $habitations = Habitation::all();
-        return response()->json($habitations);
+        $montants = Montant::all();
+        return response()->json($montants);
     }
 
     /**
@@ -37,31 +37,33 @@ class HabitationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'intitule' => 'required',
+            'idhabitation' => 'required',
+            'etat' => 'required',
+            'montant' => 'required',
         ]);
-        $habitation = habitation::create($request->all());
-        return response()->json(['message'=> 'habitation crée', 
-        'habitation' => $habitation]);
+        $montant = montant::create($request->all());
+        return response()->json(['message'=> 'montant crée', 
+        'montant' => $montant]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\montant  $montant
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return Habitation::find($id);
+        return Montant::find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\montant  $montant
      * @return \Illuminate\Http\Response
      */
-    public function edit(Habitation $habitation)
+    public function edit(montant $montant)
     {
         //
     }
@@ -70,37 +72,41 @@ class HabitationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\montant  $montant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        $habitation = habitation::findOrFail($id);
+        $montant = Montant::findOrFail($id);
         $request->validate([
-            'intitule'=> 'required',
+            'idhabitation'=> 'required',
+            'etat'=> 'required',
+            'montant'=> 'required',
         ]);
-        $habitation->intitule = $request->intitule;
+        $montant->idhabitation = $request->idhabitation;
+        $montant->etat = $request->etat;
+        $montant->montant = $request->montant;
         
-        $habitation->save();
+        $montant->save();
         
         return response()->json([
-            'message' => 'habitation modifié!',
-            'habitation' => $habitation
+            'message' => 'montant modifié!',
+            'montant' => $montant
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\montant  $montant
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $habitation= Habitation::find($id);
-        $habitation->delete();
+        $montant= Montant::find($id);
+        $montant->delete();
         return response()->json([
-            'message' => 'habitation supprimé'
+            'message' => 'montant supprimé'
         ]);
     }
 }

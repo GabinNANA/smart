@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Habitation;
+use App\Models\abonnement;
 use Illuminate\Http\Request;
 
-class HabitationController extends Controller
+class AbonnementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class HabitationController extends Controller
      */
     public function index()
     {
-        $habitations = Habitation::all();
-        return response()->json($habitations);
+        $abonnements = Abonnement::all();
+        return response()->json($abonnements);
     }
 
     /**
@@ -37,31 +37,34 @@ class HabitationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'intitule' => 'required',
+            'intitule'=> 'required',
+            'periode'=> 'required',
+            'frequence'=> 'required',
+            'montant'=> 'required',
         ]);
-        $habitation = habitation::create($request->all());
-        return response()->json(['message'=> 'habitation crée', 
-        'habitation' => $habitation]);
+        $abonnement = Abonnement::create($request->all());
+        return response()->json(['message'=> 'abonnement crée', 
+        'abonnement' => $abonnement]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement  $abonnement
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return Habitation::find($id);
+        return Abonnement::find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement  $abonnement
      * @return \Illuminate\Http\Response
      */
-    public function edit(Habitation $habitation)
+    public function edit($id)
     {
         //
     }
@@ -70,37 +73,43 @@ class HabitationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement  $abonnement
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $habitation = habitation::findOrFail($id);
+        $abonnement = abonnement::findOrFail($id);
         $request->validate([
             'intitule'=> 'required',
+            'periode'=> 'required',
+            'frequence'=> 'required',
+            'montant'=> 'required',
         ]);
-        $habitation->intitule = $request->intitule;
+        $abonnement->intitule = $request->intitule;
+        $abonnement->periode = $request->periode;
+        $abonnement->frequence = $request->frequence;
+        $abonnement->montant = $request->montant;
         
-        $habitation->save();
+        $abonnement->save();
         
         return response()->json([
-            'message' => 'habitation modifié!',
-            'habitation' => $habitation
+            'message' => 'abonnement modifié!',
+            'abonnement' => $abonnement
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement  $abonnement
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $habitation= Habitation::find($id);
-        $habitation->delete();
+        $abonnement= Abonnement::find($id);
+        $abonnement->delete();
         return response()->json([
-            'message' => 'habitation supprimé'
+            'message' => 'abonnement supprimé'
         ]);
     }
 }

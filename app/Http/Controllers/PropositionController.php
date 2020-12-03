@@ -101,7 +101,7 @@ class PropositionController extends Controller
      * @param  \App\Models\Proposition  $proposition
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Proposition $proposition)
+    public function destroy($id)
     {
         $proposition= Proposition::find($id);
         $proposition->delete();

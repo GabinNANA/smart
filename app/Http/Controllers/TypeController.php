@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Habitation;
+use App\Models\type;
 use Illuminate\Http\Request;
 
-class HabitationController extends Controller
+class TypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class HabitationController extends Controller
      */
     public function index()
     {
-        $habitations = Habitation::all();
-        return response()->json($habitations);
+        $types = Type::all();
+        return response()->json($types);
     }
 
     /**
@@ -37,31 +37,31 @@ class HabitationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'intitule' => 'required',
+            'label' => 'required',
         ]);
-        $habitation = habitation::create($request->all());
-        return response()->json(['message'=> 'habitation crée', 
-        'habitation' => $habitation]);
+        $type = Type::create($request->all());
+        return response()->json(['message'=> 'type crée', 
+        'type' => $type]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\type  $type
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return Habitation::find($id);
+        return Type::find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\type  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit(Habitation $habitation)
+    public function edit(type $type)
     {
         //
     }
@@ -70,37 +70,37 @@ class HabitationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\type  $type
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $habitation = habitation::findOrFail($id);
+        $type = type::findOrFail($id);
         $request->validate([
-            'intitule'=> 'required',
+            'label'=> 'required',
         ]);
-        $habitation->intitule = $request->intitule;
-        
-        $habitation->save();
+        $type->label = $request->label;
+
+        $type->save();
         
         return response()->json([
-            'message' => 'habitation modifié!',
-            'habitation' => $habitation
+            'message' => 'type modifié!',
+            'type' => $type
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\type  $type
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $habitation= Habitation::find($id);
-        $habitation->delete();
+        $type= Type::find($id);
+        $type->delete();
         return response()->json([
-            'message' => 'habitation supprimé'
+            'message' => 'type supprimé'
         ]);
     }
 }

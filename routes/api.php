@@ -8,6 +8,11 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\PropositionController;
+use App\Http\Controllers\AbonnementController;
+use App\Http\Controllers\AbonnementPonctuelController;
+use App\Http\Controllers\AbonnementUserController;
+use App\Http\Controllers\MontantController;
+use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -112,3 +117,68 @@ Route::get('/propositions/{id}',  [PropositionController::class, 'show']);
 Route::put('/propositions/{id}',  [PropositionController::class, 'update']);
 
 Route::delete('/propositions/{id}',  [PropositionController::class, 'destroy']);
+
+/**
+ * abonnements
+ */
+Route::get('/abonnements', [AbonnementController::class, 'index']);
+
+Route::post('/abonnements',  [AbonnementController::class, 'store']);
+
+Route::get('/abonnements/{id}',  [AbonnementController::class, 'show']);
+
+Route::put('/abonnements/{id}',  [AbonnementController::class, 'update']);
+
+Route::delete('/abonnements/{id}',  [AbonnementController::class, 'destroy']);
+
+/**
+ * abonnements_ponctuel
+ */
+Route::get('/abonnement_ponctuels', [AbonnementPonctuelController::class, 'index']);
+
+Route::post('/abonnement_ponctuels',  [AbonnementPonctuelController::class, 'store']);
+
+Route::get('/abonnement_ponctuels/{id}',  [AbonnementPonctuelController::class, 'show']);
+
+Route::put('/abonnement_ponctuels/{id}',  [AbonnementPonctuelController::class, 'update']);
+
+Route::delete('/abonnement_ponctuels/{id}',  [AbonnementPonctuelController::class, 'destroy']);
+
+/**
+ * abonnements_user
+ */
+Route::get('/abonnement_users', [AbonnementUserController::class, 'index']);
+
+Route::post('/abonnement_users',  [AbonnementUserController::class, 'store']);
+
+Route::get('/abonnement_users/{id}',  [AbonnementUserController::class, 'show']);
+
+Route::put('/abonnement_users/{id}',  [AbonnementUserController::class, 'update']);
+
+Route::delete('/abonnement_users/{id}',  [AbonnementUserController::class, 'destroy']);
+
+/**
+ * montant
+ */
+Route::get('/montants', [MontantController::class, 'index']);
+
+Route::post('/montants',  [MontantController::class, 'store']);
+
+Route::get('/montants/{id}',  [MontantController::class, 'show']);
+
+Route::put('/montants/{id}',  [MontantController::class, 'update']);
+
+Route::delete('/montants/{id}',  [MontantController::class, 'destroy']);
+
+/**
+ * type
+ */
+Route::get('/types', [TypeController::class, 'index']);
+
+Route::post('/types',  [TypeController::class, 'store']);
+
+Route::get('/types/{id}',  [TypeController::class, 'show']);
+
+Route::put('/types/{id}',  [TypeController::class, 'update']);
+
+Route::delete('/types/{id}',  [TypeController::class, 'destroy']);

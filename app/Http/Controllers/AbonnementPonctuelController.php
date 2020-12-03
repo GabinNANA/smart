@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Habitation;
+use App\Models\abonnement_ponctuel;
 use Illuminate\Http\Request;
 
-class HabitationController extends Controller
+class AbonnementPonctuelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class HabitationController extends Controller
      */
     public function index()
     {
-        $habitations = Habitation::all();
-        return response()->json($habitations);
+        $abonnement_ponctuels = Abonnement_ponctuel::all();
+        return response()->json($abonnement_ponctuels);
     }
 
     /**
@@ -37,31 +37,32 @@ class HabitationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'intitule' => 'required',
+            'iduser_reponse'=> 'required',
+            'montant'=> 'required',
         ]);
-        $habitation = habitation::create($request->all());
-        return response()->json(['message'=> 'habitation crée', 
-        'habitation' => $habitation]);
+        $abonnement_ponctuel = abonnement_ponctuel::create($request->all());
+        return response()->json(['message'=> 'abonnement_ponctuel crée', 
+        'abonnement_ponctuel' => $abonnement_ponctuel]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement_ponctuel  $abonnement_ponctuel
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return Habitation::find($id);
+        return Abonnement_ponctuel::find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement_ponctuel  $abonnement_ponctuel
      * @return \Illuminate\Http\Response
      */
-    public function edit(Habitation $habitation)
+    public function edit($id)
     {
         //
     }
@@ -70,37 +71,39 @@ class HabitationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement_ponctuel  $abonnement_ponctuel
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $habitation = habitation::findOrFail($id);
+        $Abonnement_ponctuel = Abonnement_ponctuel::findOrFail($id);
         $request->validate([
-            'intitule'=> 'required',
+            'iduser_reponse'=> 'required',
+            'montant'=> 'required',
         ]);
-        $habitation->intitule = $request->intitule;
+        $Abonnement_ponctuel->iduser_reponse = $request->iduser_reponse;
+        $Abonnement_ponctuel->montant = $request->montant;
         
-        $habitation->save();
+        $Abonnement_ponctuel->save();
         
         return response()->json([
-            'message' => 'habitation modifié!',
-            'habitation' => $habitation
+            'message' => 'Abonnement_ponctuel modifié!',
+            'Abonnement_ponctuel' => $Abonnement_ponctuel
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Habitation  $habitation
+     * @param  \App\Models\abonnement_ponctuel  $abonnement_ponctuel
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $habitation= Habitation::find($id);
-        $habitation->delete();
+        $abonnement_ponctuel= abonnement_ponctuel::find($id);
+        $abonnement_ponctuel->delete();
         return response()->json([
-            'message' => 'habitation supprimé'
+            'message' => 'abonnement_ponctuel supprimé'
         ]);
     }
 }

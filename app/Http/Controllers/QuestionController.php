@@ -37,6 +37,7 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'idtype' => '',
             'intitule' => 'required',
             'ordre' => 'required',
             'type' => 'required',
@@ -79,6 +80,7 @@ class QuestionController extends Controller
     {
         $question = question::findOrFail($id);
         $request->validate([
+            'idtype'=> '',
             'intitule'=> 'required',
             'ordre'=> 'required',
             'type'=> 'required',
@@ -101,8 +103,13 @@ class QuestionController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question)
+    public function destroy($id)
     {
-        //
+        
+        $question= Question::find($id);
+        $question->delete();
+        return response()->json([
+            'message' => 'question supprimé'
+        ]);
     }
 }

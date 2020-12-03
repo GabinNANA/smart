@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Habitation extends Model
+class abonnement_ponctuel extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'intitule'
+        'iduser_reponse',
+        'montant',
     ];
-
-    public function montants() {
-        return $this->hasMany(Montant::class);
-    }
 }
