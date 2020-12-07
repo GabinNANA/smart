@@ -35,7 +35,13 @@ class HabitationQuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'idhabitation' => 'required',
+            'idquestion' => 'required',
+        ]);
+        $question = Habitation_question::create($request->all());
+        return response()->json(['message'=> 'question crée', 
+        'question' => $question]);
     }
 
     /**

@@ -15,6 +15,7 @@ class CreateOutputsTable extends Migration
     {
         Schema::create('outputs', function (Blueprint $table) {
             $table->id();
+            $table->string('titre');
             $table->text('classement');
             $table->text('standard');
             $table->text('livrable')->nullable();

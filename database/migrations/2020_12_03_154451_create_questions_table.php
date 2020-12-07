@@ -19,6 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->string('intitule');
             $table->Integer('ordre');
             $table->string('type');
+            $table->Integer('obligatoire');
             $table->timestamps();
         });
     }

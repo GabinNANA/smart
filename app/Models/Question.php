@@ -12,7 +12,8 @@ class Question extends Model
         'idtype',
         'intitule',
         'ordre',
-        'type'
+        'type',
+        'obligatoire'
     ];
     
     public function propositions() {
