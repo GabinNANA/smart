@@ -36,17 +36,25 @@ class AbonnementUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'idabonnement' => 'required',
-            'iduser' => 'required',
-            'datedeb' => 'required',
-            'datefin' => 'required',
-            'montant' => 'required',
-            'etat' => 'required',
-        ]);
-        $abonnement_user = abonnement_user::create($request->all());
-        return response()->json(['message'=> 'abonnement_user crée', 
-        'abonnement_user' => $abonnement_user]);
+        // $request->validate([
+        //     'idabonnement' => 'required',
+        //     'iduser' => 'required',
+        //     'datedeb' => 'required',
+        //     'datefin' => 'required',
+        //     'montant' => 'required',
+        //     'etat' => 'required',
+        // ]);
+        $user = AbonnementUser::where('iduser', $request->iduser)->where('etat', 0)->first();
+        if ($user) {
+            return response()->json([
+                'error' => 'false',
+                'motif' => 'Vous avez déjà un abonnement en cours',
+            ]);
+        } else {
+            $abonnement_user = abonnement_user::create($request->all());
+            return response()->json(['message'=> 'abonnement_user crée', 
+            'abonnement_user' => $abonnement_user]);
+        }        
     }
 
     /**

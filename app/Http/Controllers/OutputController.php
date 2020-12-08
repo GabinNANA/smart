@@ -37,6 +37,7 @@ class OutputController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'titre' => 'required',
             'classement' => 'required',
             'standard' => 'required',
             'livrable' => 'required',
@@ -85,6 +86,7 @@ class OutputController extends Controller
     {
         $output = Output::findOrFail($id);
         $request->validate([
+            'titre' => 'required',
             'classement' => 'required',
             'standard' => 'required',
             'livrable' => 'required',

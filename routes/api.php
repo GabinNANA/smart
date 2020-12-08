@@ -105,6 +105,14 @@ Route::put('/questions/{id}',  [QuestionController::class, 'update']);
 
 Route::delete('/questions/{id}',  [QuestionController::class, 'destroy']);
 
+Route::get('/questions/getquestionhabitation',  [QuestionController::class, 'getquestionhabitation']);
+
+Route::get('/questions/equipement',  [QuestionController::class, 'equipement']);
+
+Route::get('/questions/classifications/:idreponsedebut',  [QuestionController::class, 'classification']);
+
+Route::get('/questions/resultat/:idreponsedebut',  [QuestionController::class, 'output']);
+
 /**
  * propositions
  */

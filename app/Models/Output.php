@@ -9,6 +9,7 @@ class Output extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'titre',
         'classement',
         'standard',
         'livrable',

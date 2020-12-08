@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Abonnement;
+use App\Models\AbonnementUser;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -110,5 +113,27 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Utilisateur supprimé'
         ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function isabonner($id)
+    {
+        $user= AbonnementUser::where('iduser',$id)->where('etat',0)->first();
+        if($user){
+            return response()->json([
+                'error' => 'false'
+            ]);
+        }
+        else{
+            return response()->json([
+                'error' => 'true'
+            ]);
+        }
+        
     }
 }
