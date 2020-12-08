@@ -10,6 +10,7 @@ class Habitation_question extends Model
     use HasFactory;
     protected $fillable = [
         'idhabitation',
-        'idquestion'
+        'idquestion',
+        'etat'
     ];
 }

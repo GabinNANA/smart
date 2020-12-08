@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategorieController extends Controller
 {
@@ -14,8 +15,32 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $categories = Categorie::all();
-        return response()->json($categories);
+        // $categories = Categorie::all();
+        // return response()->json($categories);
+
+        $categories = DB::table('categories')
+            ->get();
+        $results = array();
+            
+        foreach ($categories as $categorie) {
+            $result = array();
+
+            $result['id']=$categorie->id;
+            $result['idparent']=$categorie->idparent;
+            $result['intitule']=$categorie->intitule;
+
+            if($categorie->idparent!=NULL){
+
+                $parent = DB::table('categories')->find($categorie->idparent);
+                $result['parent']=$parent->intitule;
+
+            }else{
+                $result['parent']='';          
+                
+            }
+            array_push($results,$result);
+        }
+        return  response()->json($results);
     }
 
     /**
@@ -37,6 +62,7 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'idparent' => '',
             'intitule' => 'required',
         ]);
         $categorie = Categorie::create($request->all());
@@ -77,6 +103,7 @@ class CategorieController extends Controller
     {
         $categorie = Categorie::findOrFail($id);
         $request->validate([
+            'idparent'=> 'required',
             'intitule'=> 'required',
         ]);
         $categorie->intitule = $request->intitule;

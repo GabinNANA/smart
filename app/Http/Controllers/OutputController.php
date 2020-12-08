@@ -40,13 +40,13 @@ class OutputController extends Controller
             'titre' => 'required',
             'classement' => 'required',
             'standard' => 'required',
-            'livrable' => 'required',
-            'validite' => 'required',
-            'delai' => 'required',
-            'cout_etude' => 'required',
-            'frais_admin' => 'required',
-            'penalite' => 'required',
-            'ispayer' => 'required',
+            'livrable' => '',
+            'validite' => '',
+            'delai' => '',
+            'cout_etude' => '',
+            'frais_admin' => '',
+            'penalite' => '',
+            'ispayer' => '',
         ]);
         $output = Output::create($request->all());
         return response()->json(['message'=> 'output crée', 
@@ -89,14 +89,15 @@ class OutputController extends Controller
             'titre' => 'required',
             'classement' => 'required',
             'standard' => 'required',
-            'livrable' => 'required',
-            'validite' => 'required',
-            'delai' => 'required',
-            'cout_etude' => 'required',
-            'frais_admin' => 'required',
-            'penalite' => 'required',
-            'ispayer' => 'required',
+            'livrable' => '',
+            'validite' => '',
+            'delai' => '',
+            'cout_etude' => '',
+            'frais_admin' => '',
+            'penalite' => '',
+            'ispayer' => '',
         ]);
+        $output->titre = $request->titre;
         $output->classement = $request->classement;
         $output->standard = $request->standard;
         $output->livrable = $request->livrable;

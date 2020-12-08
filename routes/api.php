@@ -9,6 +9,7 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\PropositionController;
 use App\Http\Controllers\AbonnementController;
+use App\Http\Controllers\AttributionController;
 use App\Http\Controllers\AbonnementPonctuelController;
 use App\Http\Controllers\AbonnementUserController;
 use App\Http\Controllers\MontantController;
@@ -97,11 +98,15 @@ Route::delete('/outputs/{id}',  [OutputController::class, 'destroy']);
  */
 Route::get('/questions', [QuestionController::class, 'index']);
 
+Route::get('/questionsprop', [QuestionController::class, 'proposition']);
+
 Route::post('/questions',  [QuestionController::class, 'store']);
 
 Route::get('/questions/{id}',  [QuestionController::class, 'show']);
 
 Route::put('/questions/{id}',  [QuestionController::class, 'update']);
+
+Route::delete('/questionsprop/{id}', [QuestionController::class, 'destroyprop']);
 
 Route::delete('/questions/{id}',  [QuestionController::class, 'destroy']);
 
@@ -190,3 +195,16 @@ Route::get('/types/{id}',  [TypeController::class, 'show']);
 Route::put('/types/{id}',  [TypeController::class, 'update']);
 
 Route::delete('/types/{id}',  [TypeController::class, 'destroy']);
+
+/**
+* attribution
+*/
+Route::get('/attributions', [AttributionController::class, 'index']);
+
+Route::post('/attributions',  [AttributionController::class, 'store']);
+
+Route::get('/attributions/{id}',  [AttributionController::class, 'show']);
+
+Route::put('/attributions/{id}',  [AttributionController::class, 'update']);
+
+Route::delete('/attributions/{id}',  [AttributionController::class, 'destroy']);

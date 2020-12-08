@@ -35,7 +35,13 @@ class EtatQuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'etat' => 'required',
+            'idquestion' => 'required',
+        ]);
+        $question = Etat_question::create($request->all());
+        return response()->json(['message'=> 'question crée', 
+        'question' => $question]);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Models\Categorie;
 use App\Models\Proposition;
 use App\Models\Type;
+use DB;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -17,8 +18,55 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::all();
-        return response()->json($questions);
+        $questions = DB::table('questions')
+            ->get();
+        $results = array();
+            
+        foreach ($questions as $question) {
+            $result = array();
+
+            if($question->idtype!=NULL){
+
+                $type = DB::table('types')->find($question->idtype);
+                $result['label']=$type->intitule;
+
+            }else{
+                $result['label']='';          
+                
+            }
+            $result['question']=$question;
+            array_push($results,$result);
+        }
+        return  response()->json($results);
+    }
+
+    /**
+     * Liste des questions avec leurs propositions
+     */
+    public function proposition()
+    {
+        $questions = DB::table('questions')
+            ->join('propositions', 'questions.id', '=', 'propositions.idquestion')
+            ->select('questions.*')
+            ->distinct('id')
+            ->get();
+            
+        $results = array();
+        foreach ($questions as $question) {
+            $result = array();
+            $propositions = DB::table('propositions')
+                ->where('idquestion', $question->id)
+                ->get();
+
+            $result['intitule'] = $question->intitule;
+            $result['ordre'] = $question->ordre;
+            $result['obligatoire'] = $question->obligatoire;
+            $result['proposition'] = $propositions;
+
+            array_push($results,$result);
+        }
+
+        return response()->json($results);
     }
 
     /**
@@ -97,8 +145,9 @@ class QuestionController extends Controller
     {
         $request->validate([
             'intitule' => 'required',
-            'ordre' => 'required',
+            'ordre' => '',
             'type' => 'required',
+            'obligatoire'=>''
         ]);
         $question = Question::create($request->all());
         return response()->json(['message'=> 'question crée', 
@@ -113,7 +162,23 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        return Question::find($id);
+        $question = Question::find($id);
+        
+        $result = array();
+        $propositions = DB::table('propositions')
+            ->where('idquestion', $question->id)
+            ->get();
+
+        $result['id'] = $question->id;
+        $result['idtype'] = $question->idtype;
+        $result['intitule'] = $question->intitule;
+        $result['obligatoire'] = $question->obligatoire;
+        $result['ordre'] = $question->ordre;
+        $result['type'] = $question->type;
+        $result['proposition'] = $propositions;
+        $result['tailletab'] = sizeof($propositions);
+
+        return response()->json($result);
     }
 
     /**
@@ -139,12 +204,14 @@ class QuestionController extends Controller
         $question = question::findOrFail($id);
         $request->validate([
             'intitule'=> 'required',
-            'ordre'=> 'required',
+            'ordre'=> '',
             'type'=> 'required',
+            'obligatoire'=>''
         ]);
         $question->intitule = $request->intitule;
         $question->ordre = $request->ordre;
         $question->type = $request->type;
+        $question->obligatoire = $request->obligatoire;
         
         $question->save();
         
@@ -152,6 +219,18 @@ class QuestionController extends Controller
             'message' => 'catégorie modifié!',
             'question' => $question
         ]);
+    }
+
+    public function destroyprop($id)
+    {
+        $propositions = DB::table('propositions')
+            ->where('idquestion',$id)
+            ->delete();
+
+        return response()->json([
+            'message' => 'Propositions supprimées'
+        ]);
+
     }
 
     /**
@@ -173,6 +252,15 @@ class QuestionController extends Controller
      */
     public function questionAnswer($idquestionreponse)
     {
-        
+        $propositions = DB::table('propositions')
+            ->where('idquestion',$id)
+            ->delete();
+
+        $question= Question::where('id',$id)
+            ->delete();
+            
+        return response()->json([
+            'message' => 'question supprimé'
+        ]);
     }
 }
