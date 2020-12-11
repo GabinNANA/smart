@@ -110,13 +110,16 @@ Route::delete('/questionsprop/{id}', [QuestionController::class, 'destroyprop'])
 
 Route::delete('/questions/{id}',  [QuestionController::class, 'destroy']);
 
-Route::get('/questions/getquestionhabitation',  [QuestionController::class, 'getquestionhabitation']);
+Route::get('/questionselt/getquestionhabitation/{lesdeux}',  [QuestionController::class, 'getquestionhabitation']);
 
-Route::get('/questions/equipement',  [QuestionController::class, 'equipement']);
+Route::get('/questionselt/equipement/categorie/{id}',  [QuestionController::class, 'Equipementcategorie']);
+Route::get('/questionselt/equipement',  [QuestionController::class, 'equipement']);
 
-Route::get('/questions/classifications/:idreponsedebut',  [QuestionController::class, 'classification']);
+Route::get('/questionselt/categorieequipement',  [QuestionController::class, 'CategorieEquipement']);
 
-Route::get('/questions/resultat/:idreponsedebut',  [QuestionController::class, 'output']);
+Route::get('/questions/classifications/{idreponsedebut}',  [QuestionController::class, 'classification']);
+
+Route::get('/questions/resultat/{idreponsedebut}',  [QuestionController::class, 'output']);
 
 /**
  * propositions
