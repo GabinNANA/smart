@@ -28,6 +28,14 @@ class PropositionController extends Controller
         //
     }
 
+    
+    public function Getin($valeur)
+    {
+        $tablo = explode(',',$valeur);
+        $propositions = Proposition::whereIn('id',$tablo)->get();
+        return response()->json($propositions);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

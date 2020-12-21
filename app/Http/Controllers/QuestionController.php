@@ -85,30 +85,28 @@ class QuestionController extends Controller
             ->get();
         return response()->json($equipement);
     }
-
-    public function Equipementcategorie($id){
-        $request = new  Request;
-        if($request->input('query') != ''){
-            $equipement = DB::table('propositions')
-                ->select('propositions.*','categories.intitule as categorieintitule,',
-                DB::raw('(SELECT label FROM types WHERE questions.idtype = id) as intituletype'))
-                ->join('categories', 'categories.id', 'propositions.idcategorie')
-                ->join('questions', 'questions.id', 'propositions.idquestion')
-                ->where(DB::raw('(SELECT label FROM types WHERE questions.idtype = id)'),'=', 'equipement')
-                ->where('categories.id',$request->input('categorie'))
-                ->where('propositions.choix','LIKE',"%".$request->input('query').'%')
-                ->get();
-        }
-        else{
-            $equipement = DB::table('propositions')
+    public function Equipementcategoriesearch($id,$query){
+        $equipement = DB::table('propositions')
                 ->select('propositions.*','categories.intitule as categorieintitule,',
                 DB::raw('(SELECT label FROM types WHERE questions.idtype = id) as intituletype'))
                 ->join('categories', 'categories.id', 'propositions.idcategorie')
                 ->join('questions', 'questions.id', 'propositions.idquestion')
                 ->where(DB::raw('(SELECT label FROM types WHERE questions.idtype = id)'),'=', 'equipement')
                 ->where('categories.id',$id)
+                ->where('propositions.choix','LIKE',"%".$query.'%')
                 ->get();
-        }
+        return response()->json($equipement);
+    }
+
+    public function Equipementcategorie($id){
+        $equipement = DB::table('propositions')
+                ->select('propositions.*', 'categories.intitule as categorieintitule,',
+                    DB::raw('(SELECT label FROM types WHERE questions.idtype = id) as intituletype'))
+                ->join('categories', 'categories.id', 'propositions.idcategorie')
+                ->join('questions', 'questions.id', 'propositions.idquestion')
+                ->where(DB::raw('(SELECT label FROM types WHERE questions.idtype = id)'), '=', 'equipement')
+                ->where('categories.id', $id)
+                ->get();
         return response()->json($equipement);
     }
 

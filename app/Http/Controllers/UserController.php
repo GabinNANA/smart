@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Abonnement;
-use App\Models\AbonnementUser;
+use App\Models\abonnement_user;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -121,18 +121,14 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function isabonner($id)
+    public static function isabonner($id)
     {
-        $user= AbonnementUser::where('iduser',$id)->where('etat',0)->first();
+        $user= abonnement_user::where('iduser',$id)->where('etat',0)->first();
         if($user){
-            return response()->json([
-                'error' => 'false'
-            ]);
+            return 'true';
         }
         else{
-            return response()->json([
-                'error' => 'true'
-            ]);
+            return 'false';
         }
         
     }

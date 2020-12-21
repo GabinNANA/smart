@@ -15,6 +15,9 @@ use App\Http\Controllers\AbonnementUserController;
 use App\Http\Controllers\MontantController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserReponseController;
+use App\Http\Controllers\OutputEquipementController;
+use App\Http\Controllers\PrestataireController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +43,8 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);   
+    Route::get('/forgetpwd', [UserController::class, 'forgetpwd']);    
 });
 
 /**
@@ -113,13 +117,12 @@ Route::delete('/questions/{id}',  [QuestionController::class, 'destroy']);
 Route::get('/questionselt/getquestionhabitation/{lesdeux}',  [QuestionController::class, 'getquestionhabitation']);
 
 Route::get('/questionselt/equipement/categorie/{id}',  [QuestionController::class, 'Equipementcategorie']);
+
+Route::get('/questionselt/equipement/search/{id}/{query}',  [QuestionController::class, 'Equipementcategoriesearch']);
+
 Route::get('/questionselt/equipement',  [QuestionController::class, 'equipement']);
 
 Route::get('/questionselt/categorieequipement',  [QuestionController::class, 'CategorieEquipement']);
-
-Route::get('/questions/classifications/{idreponsedebut}',  [QuestionController::class, 'classification']);
-
-Route::get('/questions/resultat/{idreponsedebut}',  [QuestionController::class, 'output']);
 
 /**
  * propositions
@@ -133,6 +136,8 @@ Route::get('/propositions/{id}',  [PropositionController::class, 'show']);
 Route::put('/propositions/{id}',  [PropositionController::class, 'update']);
 
 Route::delete('/propositions/{id}',  [PropositionController::class, 'destroy']);
+
+Route::get('/propositionselt/Getin/{valeur}',  [PropositionController::class, 'Getin']);
 
 /**
  * abonnements
@@ -173,6 +178,56 @@ Route::put('/abonnement_users/{id}',  [AbonnementUserController::class, 'update'
 
 Route::delete('/abonnement_users/{id}',  [AbonnementUserController::class, 'destroy']);
 
+
+
+/**
+ * output_equipement
+ */
+Route::get('/output_equipement', [OutputEquipementController::class, 'index']);
+
+Route::post('/output_equipement',  [OutputEquipementController::class, 'store']);
+
+Route::get('/output_equipement/{id}',  [OutputEquipementController::class, 'show']);
+
+Route::put('/output_equipement/{id}',  [OutputEquipementController::class, 'update']);
+
+Route::delete('/output_equipement/{id}',  [OutputEquipementController::class, 'destroy']);
+
+Route::delete('/output_equipementelt/{id}',  [OutputEquipementController::class, 'getall']);
+
+
+
+/**
+ * prestataire
+ */
+Route::get('/prestataire', [PrestataireController::class, 'index']);
+
+Route::post('/prestataire',  [PrestataireController::class, 'store']);
+
+Route::post('/prestataireelt/search',  [PrestataireController::class, 'search']);
+
+Route::get('/prestataire/{id}',  [PrestataireController::class, 'show']);
+
+Route::put('/prestataire/{id}',  [PrestataireController::class, 'update']);
+
+Route::delete('/prestataire/{id}',  [PrestataireController::class, 'destroy']);
+
+/**
+ *user_reponse
+ */
+Route::get('/user_reponse', [UserReponseController::class, 'index']);
+
+Route::post('/user_reponse',  [UserReponseController::class, 'store']);
+
+Route::get('/user_reponse/{id}',  [UserReponseController::class, 'show']);
+
+Route::put('/user_reponse/{id}',  [UserReponseController::class, 'update']);
+
+Route::delete('/user_reponse/{id}',  [UserReponseController::class, 'destroy']);
+
+Route::get('/user_reponseelt/classifications/{id}',  [UserReponseController::class, 'classification']);
+
+Route::get('/user_reponseelt/resultat/{id}',  [UserReponseController::class, 'output']);
 /**
  * montant
  */

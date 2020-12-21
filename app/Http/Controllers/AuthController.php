@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\abonnement_user;
+use JWTAuth;
+use JWTFactory;
 use Validator;
 
 
@@ -29,15 +32,23 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
+        $credentials = request(['email', 'password']);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-
-        if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $utilisateur = User::where('email',$request->email)->where('password',$request->password)->first();
+        if($utilisateur){
+            $abonnement = User::isabonner($utilisateur->id);
+           return response()->json([
+                'utilisateur' =>$utilisateur,
+                'abonnement' =>$abonnement,
+            ], 201);
         }
-
-        return $this->createNewToken($token);
+        else{
+            return response()->json([
+                'message' =>'Information erroné',
+            ], 201);
+        }
     }
 
     /**
@@ -46,25 +57,23 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:6',
-            'telephone' => 'required|string|max:9|min:9',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'nom' => 'required|string|between:2,100',
+        //     'email' => 'required|string|email|max:100|unique:users',
+        //     'password' => 'required|string|confirmed|min:6',
+        //     'telephone' => 'required|string|min:9',
+        // ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if($validator->fails()){
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
 
-        $user = User::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
-                ));
-
+        $user = User::create($request->all());
+        $abonnement = UserController::isabonner($user->id);
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user
+            'user' => $user,
+            'abonnement' =>$abonnement,
         ], 201);
     }
 
@@ -109,7 +118,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => JWTFactory::getTTL() * 60,
             'user' => auth()->user()
         ]);
     }
