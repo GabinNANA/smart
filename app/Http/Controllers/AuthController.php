@@ -8,6 +8,7 @@ use App\Models\abonnement_user;
 use JWTAuth;
 use JWTFactory;
 use Validator;
+use DB;
 
 
 class AuthController extends Controller
@@ -26,6 +27,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    
     public function login(Request $request){
     	$validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -38,15 +40,50 @@ class AuthController extends Controller
         }
         $utilisateur = User::where('email',$request->email)->where('password',$request->password)->first();
         if($utilisateur){
-            $abonnement = User::isabonner($utilisateur->id);
+            //echo "string";
+            if ($request->abonnement != '') {
+                $otherabonnement = abonnement_user::where('iduser',$utilisateur->id)->get();
+                foreach ($otherabonnement as $key => $value) {
+                    $value->etat = 1;
+                    $value->save();
+                }
+                $actualite = abonnement_user::create([
+                   'idabonnement' => $request->abonnement,
+                    'iduser' => $utilisateur->id,
+                    'montant' => '3000',
+                    'datedeb' => date('Y-m-d'),
+                    'datefin' => date('Y-m-d',strtotime('+1 year')),
+                    'etat' => '0',
+                ]);
+            }
+            $abonnement = DB::select('SELECT * FROM abonnement_users WHERE iduser='.$utilisateur->id.' AND etat = 0 ORDER BY id DESC LIMIT 1');
+            $typeabonnement = DB::select('SELECT * FROM contenu_abonnement WHERE idabonnement IN (SELECT idabonnement FROM abonnement_users WHERE iduser='.$utilisateur->id.')');
+            $formation = '';$securite = '';$environnement = '';
+            if (count($typeabonnement) != 0) {
+                foreach ($typeabonnement as $key => $value) {
+                    if ($value->contenu == 'formation') {
+                        $formation = 'oui';
+                    }
+                    if ($value->contenu == 'securite') {
+                        $securite = 'oui';
+                    }
+                    if ($value->contenu == 'environnement') {
+                        $environnement = 'oui';
+                    }
+                }
+            }
+            //var_dump($abonnement);
            return response()->json([
                 'utilisateur' =>$utilisateur,
                 'abonnement' =>$abonnement,
+                'formation' =>$formation,
+                'securite' =>$securite,
+                'environnement' =>$environnement,
             ], 201);
         }
         else{
             return response()->json([
-                'message' =>'Information erroné',
+                'message' =>'Information erronée',
             ], 201);
         }
     }
@@ -67,14 +104,56 @@ class AuthController extends Controller
         // if($validator->fails()){
         //     return response()->json($validator->errors()->toJson(), 400);
         // }
+        $utilisateur = User::where('email',$request->email)->first();
+        if ($utilisateur) {
+            return response()->json([
+                'message' =>'Cet email existe déjà',
+            ], 500);
+        }
+        else{
+            $user = User::create($request->all());
 
-        $user = User::create($request->all());
-        $abonnement = UserController::isabonner($user->id);
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user,
-            'abonnement' =>$abonnement,
-        ], 201);
+            if ($request->abonnement != '') {
+                $otherabonnement = abonnement_user::where('iduser',$user->id)->get();
+                foreach ($otherabonnement as $key => $value) {
+                    $value->etat = 1;
+                    $value->save();
+                }
+                $actualite = abonnement_user::create([
+                   'idabonnement' => $request->abonnement,
+                    'iduser' => $user->id,
+                    'montant' => '3000',
+                    'datedeb' => date('Y-m-d'),
+                    'datefin' => date('Y-m-d',strtotime('+1 year')),
+                    'etat' => '0',
+                ]);
+            }
+            $abonnement = DB::select('SELECT * FROM abonnement_users WHERE iduser='.$user->id.' AND etat = 0 ORDER BY id DESC LIMIT 1');
+            $typeabonnement = DB::select('SELECT * FROM contenu_abonnement WHERE idabonnement IN (SELECT idabonnement FROM abonnement_users WHERE iduser='.$user->id.')');
+            $formation = '';$securite = '';$environnement = '';
+            if (count($typeabonnement) != 0) {
+                foreach ($typeabonnement as $key => $value) {
+                    if ($value->contenu == 'formation') {
+                        $formation = 'oui';
+                    }
+                    if ($value->contenu == 'securite') {
+                        $securite = 'oui';
+                    }
+                    if ($value->contenu == 'environnement') {
+                        $environnement = 'oui';
+                    }
+                }
+            }
+            //var_dump($abonnement);
+           return response()->json([
+                'utilisateur' =>$user,
+                'abonnement' =>$abonnement,
+                'formation' =>$formation,
+                'securite' =>$securite,
+                'environnement' =>$environnement,
+            ], 201);
+        }
+        
     }
 
 

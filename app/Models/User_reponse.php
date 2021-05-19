@@ -14,6 +14,7 @@ class User_reponse extends Model
         'etat',
         'idquestion',
         'idparent',
-        'response'
+        'response',
+      	'isautre'
     ];
 }

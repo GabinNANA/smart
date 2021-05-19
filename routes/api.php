@@ -44,12 +44,14 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);   
-    Route::get('/forgetpwd', [UserController::class, 'forgetpwd']);    
+    //Route::get('/forgetpwd', [UserController::class, 'forgetpwd']);
 });
 
 /**
  * users
  */
+Route::post('/forgetpwd', [UserController::class, 'recorver']);  
+Route::post('/contacter', [UserController::class, 'contacter']);    
 Route::get('/users', [UserController::class, 'index']);
 
 Route::get('/users/{id}',  [UserController::class, 'show']);
@@ -67,9 +69,13 @@ Route::post('/habitations',  [HabitationController::class, 'store']);
 
 Route::get('/habitations/{id}',  [HabitationController::class, 'show']);
 
+Route::get('/habitations/autre/{id}',  [HabitationController::class, 'autre']);
+
 Route::put('/habitations/{id}',  [HabitationController::class, 'update']);
 
 Route::delete('/habitations/{id}',  [HabitationController::class, 'destroy']);
+
+Route::get('/habitationsautres/{typehabitation}',  [HabitationController::class, 'autrehabitation']);
 
 /**
  * categories
@@ -116,13 +122,23 @@ Route::delete('/questions/{id}',  [QuestionController::class, 'destroy']);
 
 Route::get('/questionselt/getquestionhabitation/{lesdeux}',  [QuestionController::class, 'getquestionhabitation']);
 
+Route::get('/questionselt/categorie/equipement',  [QuestionController::class, 'equipement']);
+
 Route::get('/questionselt/equipement/categorie/{id}',  [QuestionController::class, 'Equipementcategorie']);
 
-Route::get('/questionselt/equipement/search/{id}/{query}',  [QuestionController::class, 'Equipementcategoriesearch']);
+Route::get('/questionselt/equipement/search',  [QuestionController::class, 'Equipementcategoriesearch']);
 
 Route::get('/questionselt/equipement',  [QuestionController::class, 'equipement']);
 
+Route::get('/questionselt/environnement/search',  [QuestionController::class, 'Environnementcategoriesearch']);
+
+Route::get('/questionselt/environnement',  [QuestionController::class, 'environnement']);
+
 Route::get('/questionselt/categorieequipement',  [QuestionController::class, 'CategorieEquipement']);
+
+Route::get('/questionselt/categorieenvironnement',  [QuestionController::class, 'CategorieEnvironnement']);
+
+Route::get('/questionselt/produit',  [QuestionController::class, 'produit']);
 
 /**
  * propositions
@@ -138,6 +154,36 @@ Route::put('/propositions/{id}',  [PropositionController::class, 'update']);
 Route::delete('/propositions/{id}',  [PropositionController::class, 'destroy']);
 
 Route::get('/propositionselt/Getin/{valeur}',  [PropositionController::class, 'Getin']);
+
+Route::get('/propositionselt/getenvironnement/{lesdeux}',  [PropositionController::class, 'getenvironnement']);
+
+Route::get('/propositionselt/getformation/{lesdeux}',  [PropositionController::class, 'getformation']);
+
+Route::get('/propositionselt/getsecurite',  [PropositionController::class, 'getsecurite']);
+
+Route::get('/propositionselt/getentreprise/{lesdeux}',  [PropositionController::class, 'getentreprise']);
+
+Route::post('/propositionselt/savedate',  [PropositionController::class, 'savedate']);
+
+Route::post('/propositionselt/saverappel',  [PropositionController::class, 'saverappel']);
+
+Route::post('/propositionselt/getnbnlu',  [PropositionController::class, 'getnbnlu']);
+
+Route::get('/propositionselt/getnotification/{lesdeux}',  [PropositionController::class, 'getnotification']);
+
+Route::get('/propositionselt/setislu/{idrappel}',  [PropositionController::class, 'setislu']);
+
+Route::get('/propositionselt/Getmaintenance/{valeur}',  [PropositionController::class, 'Getmaintenance']);
+
+Route::get('/propositionselt/Getmaintenanceenv/{valeur}',  [PropositionController::class, 'Getmaintenanceenv']);
+
+Route::get('/propositionselt/Getdateequipement/{valeur}',  [PropositionController::class, 'Getdateequipement']);
+
+Route::get('/propositionselt/Getlastdateequipement/{valeur}',  [PropositionController::class, 'Getlastdateequipement']);
+
+Route::post('/propositionselt/savemaintenance',  [PropositionController::class, 'savemaintenance']);
+
+Route::post('/propositionselt/deletehistorique',  [PropositionController::class, 'deletehistorique']);
 
 /**
  * abonnements
@@ -193,7 +239,7 @@ Route::put('/output_equipement/{id}',  [OutputEquipementController::class, 'upda
 
 Route::delete('/output_equipement/{id}',  [OutputEquipementController::class, 'destroy']);
 
-Route::delete('/output_equipementelt/{id}',  [OutputEquipementController::class, 'getall']);
+Route::get('/output_equipementelt/{id}',  [OutputEquipementController::class, 'getall']);
 
 
 
@@ -227,7 +273,17 @@ Route::delete('/user_reponse/{id}',  [UserReponseController::class, 'destroy']);
 
 Route::get('/user_reponseelt/classifications/{id}',  [UserReponseController::class, 'classification']);
 
-Route::get('/user_reponseelt/resultat/{id}',  [UserReponseController::class, 'output']);
+Route::get('/user_reponseelt/resultatgeneralite/{id}/{iduser}',  [UserReponseController::class, 'outputgenereralite']);
+
+Route::get('/user_reponseelt/resultatexigence/{id}',  [UserReponseController::class, 'outputexigence']);
+
+Route::get('/user_reponseelt/resultatenvironnement/{id}',  [UserReponseController::class, 'outputenvironnement']);
+
+Route::get('/user_reponseelt/historiques/{id}',  [UserReponseController::class, 'historique']);
+
+Route::get('/user_reponseelt/question_reponse/{id}',  [UserReponseController::class, 'questionreponse']);
+
+Route::post('/user_reponseelt/supprimer',  [UserReponseController::class, 'supprimer']);
 /**
  * montant
  */

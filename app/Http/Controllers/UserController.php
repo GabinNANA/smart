@@ -132,4 +132,68 @@ class UserController extends Controller
         }
         
     }
+
+    public function recorver(Request $request){
+
+        $utilisateur = User::where('email',$request->email)->first();
+        if($utilisateur){
+
+            $to = $request->email;
+            $subject = "Paramètre de connexion";
+
+            $message = "Email : ".$utilisateur->email."<br>Mot de passe : ".$utilisateur->password;
+
+                
+            $headers = 'From: Mybuildindtip <contact@mybuildingtip.com>'."\r\n";
+                
+            $headers .= 'Mime-Version: 1.0'."\r\n";
+            $headers .= 'Content-type: text/html; charset=utf-8'."\r\n";
+            $headers .= "\r\n";
+     
+            // Sending email
+            if(mail($to, $subject, $message, $headers)){
+                return response()->json([
+                'message' => 'Un email vous a été envoyé avec vos paramètres de connexion',
+            ], 200);
+            }
+            else{
+                return response()->json([
+                'message' => 'Problème de connexion',
+            ], 200);
+            }
+        }
+        else{
+            return response()->json([
+                'message' =>'Cette adresse email n\'existe pas dans notre système',
+            ], 422);
+        }
+    }
+
+    public function contacter(Request $request){
+
+        //$to = 'contact@mybuildingtip.com';
+        $to = 'tchepda.flavie@yahoo.fr';
+        $subject = "Formulaire contact";
+
+        $message = $request->message."<br><br><b>Information complementaire</b><br><br> Téléphone : ".$request->tel."<br>Email : ".$request->email;
+
+            
+        $headers = 'From: '.$request->nom.' <'.$request->email.'>'."\r\n";
+            
+        $headers .= 'Mime-Version: 1.0'."\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8'."\r\n";
+        $headers .= "\r\n";
+ 
+        // Sending email
+        if(mail($to, $subject, $message, $headers)){
+            return response()->json([
+            'message' => 'Enregistrement éffectué avec succès',
+            ], 200);
+        }
+        else{
+            return response()->json([
+            'message' => 'Problème de connexion',
+            ], 200);
+        }
+    }
 }

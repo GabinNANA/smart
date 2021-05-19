@@ -20,6 +20,7 @@ class CreateUserReponsesTable extends Migration
             $table->string('etat')->nullable();
             $table->foreignId('idquestion')->constrained('questions')->nullable();
             $table->Integer('idparent')->nullable();
+            $table->Integer('isautre')->nullable();
             $table->text('response');
             $table->timestamps();
         });
